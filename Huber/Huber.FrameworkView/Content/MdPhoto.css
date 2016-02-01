@@ -1,0 +1,52 @@
+﻿
+
+#modifyUserPhotoDiv .avatar-wrapper {
+  min-height: 364px;
+  max-height:500px;
+  margin-top: 15px;
+  box-shadow: inset 0 0 5px rgba(0,0,0,.25);
+  background-color: #fcfcfc;
+  overflow: hidden;
+}
+
+#modifyUserPhotoDiv .photoCenter{
+    margin:0 auto;
+}
+
+#modifyUserPhotoDiv .avatar-preview {
+  float: left;
+  margin-top: 15px;
+  margin-right: 15px;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  background-color: #fff;
+  overflow: hidden;
+}
+
+#modifyUserPhotoDiv .avatar-preview:hover {
+  border-color: #ccf;
+  box-shadow: 0 0 5px rgba(0,0,0,.15);
+}
+
+#modifyUserPhotoDiv .avatar-preview img {
+  width: 100%;
+}
+
+#modifyUserPhotoDiv .preview-lg {
+  height: 184px;
+  width: 184px;
+  margin-top: 15px;
+}
+
+#modifyUserPhotoDiv .preview-md {
+  height: 100px;
+  width: 100px;
+}
+
+#modifyUserPhotoDiv .preview-sm {
+  height: 50px;
+  width: 50px;
+}
+#modifyUserPhotoDiv .avatar-btns{
+ margin-top:10px;
+}

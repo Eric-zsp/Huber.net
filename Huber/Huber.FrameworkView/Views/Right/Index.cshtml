@@ -1,0 +1,52 @@
+﻿@{
+    Layout = "/views/Shared/_LayoutPage1.cshtml";
+    ViewBag.Title = "Huber Admin";
+}
+@model List<Huber.Kernel.Entity.RightEntity>
+<link href="/Content/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" />
+<div class="table-wrapper products-table section">
+    <div class="row-fluid head">
+        <div class="span12">
+            <h4>权限管理</h4>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div id="pad-wrapper" class="form-page">
+            <div class="row-fluid form-wrapper">
+                <!-- left column -->
+                <div class="span6 column">
+                    <div id="RightTreePannel" class=" ztree"></div>
+                </div>
+                <!-- right column -->
+                <div class="span6 column"  id="RightEditPannel">
+                    <form>
+                        <div class="field-box"><label>权限id：</label><input id="rightid" value="0" class="span8" type="text" disabled="disabled" /></div>
+                        <div class="field-box"><label>父节点ID：</label><input id="rightparentid" value="0" class="span8" type="text" disabled="disabled" /></div>
+                        <div class="field-box"><label>权限级别：</label><input id="rightLvL" value="0" class="span8" type="text" disabled="disabled" /></div>
+                        <div class="field-box"><label>权限名称：</label><input type="text" id="rightname" class="span8" /></div>
+                        <div class="field-box"><label>权限URL：</label>
+                        @*<input type="text" id="rightUrl" autocomplete="off" class="span8" />*@
+                            <input type="text" id="rightUrl" class="form-control span8" placeholder="You can type a &quot;b&quot; for test ~"  >
+                        </div>
+                        <div class="field-box"><label>描述：</label><textarea id="nodeDescribe" class="span8 wysihtml5" rows="5"></textarea></div>
+                        <div class="field-box"><label>在菜单中显示：</label><div class="ui-select span8"><select id="nodeMenu" ><option value="0" selected="selected">不显示</option><option value="1">显示</option></select></div></div>
+                        <div class="field-box" style="display:none"><label>所属模块：</label><select id="nodeCategory"></select></div>
+
+
+                        <div>
+                            <input type="button" id="RightEditPannel_addbtn" value="添加" style="display:none" class="btn-flat default" />
+                            <input type="button" id="RightEditPannel_editbtn" value="修改" style="display:none" class="btn-flat default" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="/Scripts/inc/jquery.ztree.all-3.5.js"></script>
+@*<script src="/Scripts/core/treeOperat.js"></script>*@
+<script src="/Scripts/core/rightsmanager.js?v=1"></script>
+<link href="/Scripts/inc/completer/completer.css" rel="stylesheet" />
+<script src="/Scripts/inc/completer/completer.js"></script>

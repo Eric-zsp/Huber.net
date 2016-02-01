@@ -1,0 +1,50 @@
+﻿1.js、css引用路径、ajax请求路径不要使用绝对路径，请使用BaseModulePath.getViewDirPath加上相对路径
+  使用:
+    @using MVCDemo
+    <script src="@BaseModulePath.getViewDirPath/Scripts/Demo.js"></script>
+
+2.如果想使用AppDomain.CurrentDomain.BaseDirectory来获取物理文件，请改用BaseModulePath.getBaseDirPath
+
+3.项目名称须与应用程序集名称一致。
+ 
+4.所有action方法的定义:
+      返回值必须是CorResult类型
+	  传入参数必须是CorRefEntity类型
+
+5.action方法获取参数:
+       public CorResult Index(CorRefEntity param)
+	   {
+	    var qq= param.Request["qq"];
+	   
+	   }
+
+6.HttpContext 相关的功能暂时不支持:
+    如:session application  cookie  cache
+	系统提供用户验证功能,可以提供验证通过的用户信息
+
+7.视图返回的View 结尾必须是.cshtml
+	   使用:
+		   View("/Views/Demo/Index2.cshtml");
+		   PartialView("/Views/Demo/Index2.cshtml");
+
+9.支持Action和RenderAction:
+        public IEncodedString RenderAction(string actionName, string controllerName, object routeValues)
+		public IEncodedString RenderAction(string actionName, string controllerName)
+		public IEncodedString Action(string actionName, string controllerName, object routeValues)
+	    public IEncodedString Action(string actionName, string controllerName) 
+	    使用:
+	     @Html.Action("","")         ,不支持@{Html.Action("","");}		
+	     @Html.RenderAction("","")   ,不支持@{Html.RenderAction("","");}		
+
+
+10.支持RendPartion
+      public IEncodedString RenderPartial(string partialViewName, string controllerName, object model, DynamicViewBag  ViewBag)
+	  public IEncodedString RenderPartial(string partialViewName, string controllerName, object model)
+	  public IEncodedString RenderPartial(string partialViewName, string controllerName, DynamicViewBag ViewBag)
+	  public IEncodedString RenderPartial(string partialViewName, string controllerName)
+	  使用:
+	    @Html.RenderPartial("","") ,不支持@{ Html.RenderPartial("","");}		
+ 11. 视图上引用_Layout必须.cshtml结尾
+  Layout = "/Views/Shared/_Layout.cshtml";  
+
+  12.暂时不支持区域视图，过滤器

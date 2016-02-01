@@ -1,0 +1,548 @@
+﻿@{
+    Layout = "/views/Shared/_LayoutPage1.cshtml";
+    ViewBag.Title = "模块管理";
+}
+<link href="/AdminLTE-2.3.0/font-awesome-4.4.0/css/font-awesome.css" rel="stylesheet" />
+<style type="text/css">
+    li {
+        margin-bottom: 10px;
+    }
+
+    #moduleAddContainer span {
+        width: 150px;
+        display: inline-block;
+        text-align: right;
+    }
+
+    #moduleUploadContainer span {
+        width: 80px;
+        display: inline-block;
+        text-align: right;
+    }
+    .table-icon {
+        color:#000;
+        text-decoration:none;
+    }
+    .table-icon:hover {
+        font-size:16px;
+    }
+    .fontawesome-icon-list li {
+        cursor: pointer;
+        line-height:30px;
+        list-style:none;
+        height:30px;
+    }
+    .fontawesome-icon-list li:hover {
+        background-color: #1d9d74;
+        color: #fff;
+        text-decoration: none;
+    }
+    .fontawesome-icon-list li:hover>i{
+        margin-top:2px;
+        font-size: 26px;
+    }
+</style>
+<div class="table-wrapper products-table section">
+    <div class="row-fluid head">
+        <div class="span12">
+            <h4>模块管理</h4>
+        </div>
+        <div class="row-fluid filter-block">
+            <div class="pull-right">
+                <a class="btn-flat success new-product" href="javascript:Module_operat.addModule()">+ 添加模块</a>
+            </div>
+            <div class="pull-left">
+                <input type="text" class="search user-search" placeholder="查找模块名称" id="ModuleSearch" />
+            </div>
+        </div>
+        <div class="row-fluid" id="moduleList">
+            @Html.Action("ModuleList", new { pageIndex = 1, pageSize = 10 })
+        </div>
+    </div>
+
+</div>
+@*<input type="hidden" id="pageIndex" value="1" />
+    <input type="hidden" id="pageSize" value="1" />
+    <div class="pagination pull-right" id="pageDiv">
+        <ul>
+            <li><a href="#" id="frontPage">&#8249;</a></li>
+            <li name="pagenum"><a class="active" href="#" name="aNum">1</a></li>
+            <li name="pagenum"><a href="#" name="aNum">2</a></li>
+            <li name="pagenum"><a href="#" name="aNum">3</a></li>
+            <li name="pagenum"><a href="#" name="aNum">4</a></li>
+            <li name="pagenum"><a href="#" name="aNum">5</a></li>
+            <li><a href="#" id="nextPage">&#8250;</a></li>
+        </ul>
+    </div>*@
+
+<div id="moduleAddContainer" style="display: none;width:600px;height:300px;">
+    <div class="form-page" id="pad-wrapper" style="background-color:white;margin-top:0px;">
+        <div class="row-fluid form-wrapper">
+            <div class="field-box"><label>插件名称：</label><input id="moduleAdd_name" type="text" class="span8" /></div>
+            <div class="field-box"><label>负责人：</label><input type="text" id="moduleAdd_author" class="span8" /></div>
+            @*<div class="field-box"><label>图标：</label>
+                    <div class="btn-group">
+                        <button class="btn glow">Drop down</button>
+                        <button class="btn glow dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret" style="width:1px;"></span>
+                        </button>
+                        <ul class="dropdown-menu" id="moduleadd_icon">
+                            <li ><a href="#">Option one</a></li>
+                            <li><a href="#">Option two</a></li>
+                            <li><a href="#">Option three</a></li>
+                            <li><a href="#">Option four</a></li>
+                        </ul>
+                    </div>
+                </div>*@
+            @*<div class="field-box"><label>默认Controller：</label><input type="text" id="moduleAdd_defaultController" value="Home" class="span8" /></div>
+                <div class="field-box"><label>默认Action：</label><input type="text" id="moduleAdd_defaultAction" value="Index" class="span8" /></div>*@
+            <div class="field-box"><label>描述：</label><input type="text" id="moduleAdd_describe" class="span8" /></div>
+            <div class="field-box">
+                <label>插件包：</label>
+                @*<input type="file" name="uploadify" id="moduleAdd_file" class="btn-flat inverse" />*@
+                <input name="uploadify" id="moduleAdd_file" type="file" style="display:none">
+                <div class="input-append">
+                    <input id="photoCover" class="span8" type="text" disabled="disabled">
+                    <a class="btn" onclick="$('input[id=moduleAdd_file]').click();">Browse</a>
+                </div>
+                <script type="text/javascript">
+                    $('input[id=moduleAdd_file]').change(function () {
+                        $('#photoCover').val($(this).val());
+                    });
+                </script>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div id="moduleUploadContainer" style="display: none">
+    <div class="form-page" id="pad-wrapper" style="background-color:white;margin-top:0px;">
+        <div class="row-fluid form-wrapper">
+            <div class="field-box" style="display:none"><span>插件ID：</span><input id="moduleUpdate_ID" type="text" /></div>
+            <div class="field-box"><label>插件名称：</label><input id="moduleUpdate_name" type="text" class="span8" disabled="disabled" /></div>
+            <div class="field-box">
+                <label>插件包：</label>@*<input type="file" name="uploadify" id="moduleUpdate_file" />*@
+                <input name="uploadify" id="moduleUpdate_file" type="file" style="display:none">
+                <div class="input-append">
+                    <input id="photoCoverU" class="span8" type="text" disabled="disabled">
+                    <a class="btn" onclick="$('input[id=moduleUpdate_file]').click();">Browse</a>
+                </div>
+                <script type="text/javascript">
+                    $('input[id=moduleUpdate_file]').change(function () {
+                        $('#photoCoverU').val($(this).val());
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="moduleIconContainer" style="display:none">
+    <ul class="row fontawesome-icon-list" style="max-width:1200px;">
+            <li class="span2"><i class="fa fa-fw fa-adjust"></i> fa-adjust</li>
+            @*<li class="span2"><i class="fa fa-fw fa-anchor"></i> fa-anchor</li>*@
+            <li class="span2"><i class="fa fa-fw fa-archive"></i> fa-archive</li>
+            <li class="span2"><i class="fa fa-fw fa-area-chart"></i> fa-area-chart</li>
+            @*<li class="span2"><i class="fa fa-fw fa-arrows"></i> fa-arrows</li>
+                <li class="span2"><i class="fa fa-fw fa-arrows-h"></i> fa-arrows-h</li>
+                <li class="span2"><i class="fa fa-fw fa-arrows-v"></i> fa-arrows-v</li>*@
+            <li class="span2"><i class="fa fa-fw fa-asterisk"></i> fa-asterisk</li>
+            @*<li class="span2"><i class="fa fa-fw fa-at"></i> fa-at</li>*@
+            <li class="span2"><i class="fa fa-fw fa-automobile"></i> fa-automobile <span class="text-muted">(alias)</span></li>
+            <li class="span2"><i class="fa fa-fw fa-balance-scale"></i> fa-balance-scale</li>
+            @*<li class="span2"><i class="fa fa-fw fa-ban"></i> fa-ban</li>*@
+            <li class="span2"><i class="fa fa-fw fa-bank"></i> fa-bank <span class="text-muted">(alias)</span></li>
+            <li class="span2"><i class="fa fa-fw fa-bar-chart"></i> fa-bar-chart</li>
+            @*<li class="span2"><i class="fa fa-fw fa-bar-chart-o"></i> fa-bar-chart-o <span class="text-muted">(alias)</span></li>*@
+            <li class="span2"><i class="fa fa-fw fa-barcode"></i> fa-barcode</li>
+            <li class="span2"><i class="fa fa-fw fa-bars"></i> fa-bars</li>
+            @*<li class="span2"><i class="fa fa-fw fa-battery-0"></i> fa-battery-0 <span class="text-muted">(alias)</span></li>
+                <li class="span2"><i class="fa fa-fw fa-battery-1"></i> fa-battery-1 <span class="text-muted">(alias)</span></li>
+                <li class="span2"><i class="fa fa-fw fa-battery-2"></i> fa-battery-2 <span class="text-muted">(alias)</span></li>
+                <li class="span2"><i class="fa fa-fw fa-battery-3"></i> fa-battery-3 <span class="text-muted">(alias)</span></li>
+                <li class="span2"><i class="fa fa-fw fa-battery-4"></i> fa-battery-4 <span class="text-muted">(alias)</span></li>
+                <li class="span2"><i class="fa fa-fw fa-battery-empty"></i> fa-battery-empty</li>
+                <li class="span2"><i class="fa fa-fw fa-battery-full"></i> fa-battery-full</li>
+                <li class="span2"><i class="fa fa-fw fa-battery-half"></i> fa-battery-half</li>
+                <li class="span2"><i class="fa fa-fw fa-battery-quarter"></i> fa-battery-quarter</li>
+                <li class="span2"><i class="fa fa-fw fa-battery-three-quarters"></i> fa-battery-three-quarters</li>*@
+            @*<li class="span2"><i class="fa fa-fw fa-bed"></i> fa-bed</li>*@
+            <li class="span2"><i class="fa fa-fw fa-beer"></i> fa-beer</li>
+            <li class="span2"><i class="fa fa-fw fa-bell"></i> fa-bell</li>
+            @*<li class="span2"><i class="fa fa-fw fa-bell-o"></i> fa-bell-o</li>
+                <li class="span2"><i class="fa fa-fw fa-bell-slash"></i> fa-bell-slash</li>*@
+            @*<li class="span2"><i class="fa fa-fw fa-bell-slash-o"></i> fa-bell-slash-o</li>*@
+            @*<li class="span2"><i class="fa fa-fw fa-bicycle"></i> fa-bicycle</li>*@
+            <li class="span2"><i class="fa fa-fw fa-binoculars"></i> fa-binoculars</li>
+            <li class="span2"><i class="fa fa-fw fa-birthday-cake"></i> fa-birthday-cake</li>
+            @*<li class="span2"><i class="fa fa-fw fa-bolt"></i> fa-bolt</li>
+                <li class="span2"><i class="fa fa-fw fa-bomb"></i> fa-bomb</li>*@
+            <li class="span2"><i class="fa fa-fw fa-book"></i> fa-book</li>
+            @*<li class="span2"><i class="fa fa-fw fa-bookmark"></i> fa-bookmark</li>
+                <li class="span2"><i class="fa fa-fw fa-bookmark-o"></i> fa-bookmark-o</li>*@
+            <li class="span2"><i class="fa fa-fw fa-briefcase"></i> fa-briefcase</li>
+            <li class="span2"><i class="fa fa-fw fa-bug"></i> fa-bug</li>
+            <li class="span2"><i class="fa fa-fw fa-building"></i> fa-building</li>
+            @*<li class="span2"><i class="fa fa-fw fa-building-o"></i> fa-building-o</li>
+                <li class="span2"><i class="fa fa-fw fa-bullhorn"></i> fa-bullhorn</li>
+                <li class="span2"><i class="fa fa-fw fa-bullseye"></i> fa-bullseye</li>
+                <li class="span2"><i class="fa fa-fw fa-bus"></i> fa-bus</li>
+                <li class="span2"><i class="fa fa-fw fa-cab"></i> fa-cab <span class="text-muted">(alias)</span></li>*@
+            <li class="span2"><i class="fa fa-fw fa-calculator"></i> fa-calculator</li>
+            @*<li class="span2"><i class="fa fa-fw fa-calendar"></i> fa-calendar</li>*@
+            <li class="span2"><i class="fa fa-fw fa-calendar-check-o"></i> fa-calendar-check-o</li>
+            @*<li class="span2"><i class="fa fa-fw fa-calendar-minus-o"></i> fa-calendar-minus-o</li>
+                <li class="span2"><i class="fa fa-fw fa-calendar-o"></i> fa-calendar-o</li>
+                <li class="span2"><i class="fa fa-fw fa-calendar-plus-o"></i> fa-calendar-plus-o</li>
+                <li class="span2"><i class="fa fa-fw fa-calendar-times-o"></i> fa-calendar-times-o</li>
+                <li class="span2"><i class="fa fa-fw fa-camera"></i> fa-camera</li>
+                <li class="span2"><i class="fa fa-fw fa-camera-retro"></i> fa-camera-retro</li>
+                <li class="span2"><i class="fa fa-fw fa-car"></i> fa-car</li>
+                <li class="span2"><i class="fa fa-fw fa-caret-square-o-down"></i> fa-caret-square-o-down</li>
+                <li class="span2"><i class="fa fa-fw fa-caret-square-o-left"></i> fa-caret-square-o-left</li>
+                <li class="span2"><i class="fa fa-fw fa-caret-square-o-right"></i> fa-caret-square-o-right</li>
+                <li class="span2"><i class="fa fa-fw fa-caret-square-o-up"></i> fa-caret-square-o-up</li>
+                <li class="span2"><i class="fa fa-fw fa-cart-arrow-down"></i> fa-cart-arrow-down</li>*@
+            <li class="span2"><i class="fa fa-fw fa-upload"></i> fa-upload</li>
+            <li class="span2"><i class="fa fa-fw fa-user"></i> fa-user</li>
+            @*<li class="span2"><i class="fa fa-fw fa-user-plus"></i> fa-user-plus</li>
+                <li class="span2"><i class="fa fa-fw fa-user-secret"></i> fa-user-secret</li>
+                <li class="span2"><i class="fa fa-fw fa-user-times"></i> fa-user-times</li>*@
+            <li class="span2"><i class="fa fa-fw fa-users"></i> fa-users</li>
+            <li class="span2"><i class="fa fa-fw fa-video-camera"></i> fa-video-camera</li>
+            @*<li class="span2"><i class="fa fa-fw fa-volume-down"></i> fa-volume-down</li>
+                <li class="span2"><i class="fa fa-fw fa-volume-off"></i> fa-volume-off</li>*@
+            <li class="span2"><i class="fa fa-fw fa-volume-up"></i> fa-volume-up</li>
+            <li class="span2"><i class="fa fa-fw fa-warning"></i> fa-warning <span class="text-muted">(alias)</span></li>
+            <li class="span2"><i class="fa fa-fw fa-wheelchair"></i> fa-wheelchair</li>
+            <li class="span2"><i class="fa fa-fw fa-wifi"></i> fa-wifi</li>
+            <li class="span2"><i class="fa fa-fw fa-wrench"></i> fa-wrench</li>
+            <li class="span2"><i class="fa fa-fw fa-tty"></i> fa-tty</li>
+        
+            <li class="span2"><i class="fa fa-fw fa-cart-plus"></i> fa-cart-plus</li>
+            <li class="span2"><i class="fa fa-fw fa-cc"></i> fa-cc</li>
+            <li class="span2"><i class="fa fa-fw fa-certificate"></i> fa-certificate</li>
+            @*<li class="span2"><i class="fa fa-fw fa-check"></i> fa-check</li>
+                <li class="span2"><i class="fa fa-fw fa-check-circle"></i> fa-check-circle</li>
+                <li class="span2"><i class="fa fa-fw fa-check-circle-o"></i> fa-check-circle-o</li>
+                <li class="span2"><i class="fa fa-fw fa-check-square"></i> fa-check-square</li>
+                <li class="span2"><i class="fa fa-fw fa-check-square-o"></i> fa-check-square-o</li>*@
+            <li class="span2"><i class="fa fa-fw fa-child"></i> fa-child</li>
+            <li class="span2"><i class="fa fa-fw fa-circle"></i> fa-circle</li>
+            <li class="span2"><i class="fa fa-fw fa-circle-o"></i> fa-circle-o</li>
+            @*<li class="span2"><i class="fa fa-fw fa-circle-o-notch"></i> fa-circle-o-notch</li>
+                <li class="span2"><i class="fa fa-fw fa-circle-thin"></i> fa-circle-thin</li>*@
+            <li class="span2"><i class="fa fa-fw fa-clock-o"></i> fa-clock-o</li>
+            <li class="span2"><i class="fa fa-fw fa-clone"></i> fa-clone</li>
+            @*<li class="span2"><i class="fa fa-fw fa-close"></i> fa-close <span class="text-muted">(alias)</span></li>*@
+            <li class="span2"><i class="fa fa-fw fa-cloud"></i> fa-cloud</li>
+            @*<li class="span2"><i class="fa fa-fw fa-cloud-download"></i> fa-cloud-download</li>
+                <li class="span2"><i class="fa fa-fw fa-cloud-upload"></i> fa-cloud-upload</li>
+                <li class="span2"><i class="fa fa-fw fa-code"></i> fa-code</li>*@
+            <li class="span2"><i class="fa fa-fw fa-code-fork"></i> fa-code-fork</li>
+            <li class="span2"><i class="fa fa-fw fa-coffee"></i> fa-coffee</li>
+            <li class="span2"><i class="fa fa-fw fa-cog"></i> fa-cog</li>
+            <li class="span2"><i class="fa fa-fw fa-cogs"></i> fa-cogs</li>
+            @*<li class="span2"><i class="fa fa-fw fa-comment"></i> fa-comment</li>
+                <li class="span2"><i class="fa fa-fw fa-comment-o"></i> fa-comment-o</li>*@
+            <li class="span2"><i class="fa fa-fw fa-commenting"></i> fa-commenting</li>
+            @*<li class="span2"><i class="fa fa-fw fa-commenting-o"></i> fa-commenting-o</li>
+                <li class="span2"><i class="fa fa-fw fa-comments"></i> fa-comments</li>
+                <li class="span2"><i class="fa fa-fw fa-comments-o"></i> fa-comments-o</li>
+                <li class="span2"><i class="fa fa-fw fa-compass"></i> fa-compass</li>
+                <li class="span2"><i class="fa fa-fw fa-copyright"></i> fa-copyright</li>
+                <li class="span2"><i class="fa fa-fw fa-creative-commons"></i> fa-creative-commons</li>*@
+            <li class="span2"><i class="fa fa-fw fa-credit-card"></i> fa-credit-card</li>
+            @*<li class="span2"><i class="fa fa-fw fa-crop"></i> fa-crop</li>
+                <li class="span2"><i class="fa fa-fw fa-crosshairs"></i> fa-crosshairs</li>
+                <li class="span2"><i class="fa fa-fw fa-cube"></i> fa-cube</li>*@
+            <li class="span2"><i class="fa fa-fw fa-cubes"></i> fa-cubes</li>
+            <li class="span2"><i class="fa fa-fw fa-cutlery"></i> fa-cutlery</li>
+            <li class="span2"><i class="fa fa-fw fa-dashboard"></i> fa-dashboard <span class="text-muted">(alias)</span></li>
+            <li class="span2"><i class="fa fa-fw fa-database"></i> fa-database</li>
+            <li class="span2"><i class="fa fa-fw fa-desktop"></i> fa-desktop</li>
+            <li class="span2"><i class="fa fa-fw fa-diamond"></i> fa-diamond</li>
+            <li class="span2"><i class="fa fa-fw fa-dot-circle-o"></i> fa-dot-circle-o</li>
+            <li class="span2"><i class="fa fa-fw fa-download"></i> fa-download</li>
+            <li class="span2"><i class="fa fa-fw fa-edit"></i> fa-edit <span class="text-muted">(alias)</span></li>
+            <li class="span2"><i class="fa fa-fw fa-tv"></i> fa-tv <span class="text-muted">(alias)</span></li>
+            <li class="span2"><i class="fa fa-fw fa-umbrella"></i> fa-umbrella</li>
+            <li class="span2"><i class="fa fa-fw fa-university"></i> fa-university</li>
+            @*<li class="span2"><i class="fa fa-fw fa-unlock"></i> fa-unlock</li>*@
+            <li class="span2"><i class="fa fa-fw fa-unlock-alt"></i> fa-unlock-alt</li>
+            @*<li class="span2"><i class="fa fa-fw fa-unsorted"></i> fa-unsorted <span class="text-muted">(alias)</span></li>*@
+
+            <li class="span2"><i class="fa fa-fw fa-mouse-pointer"></i> fa-mouse-pointer</li>
+            <li class="span2"><i class="fa fa-fw fa-music"></i> fa-music</li>
+       
+            @*<li class="span2"><i class="fa fa-fw fa-ellipsis-h"></i> fa-ellipsis-h</li>
+                <li class="span2"><i class="fa fa-fw fa-ellipsis-v"></i> fa-ellipsis-v</li>
+                <li class="span2"><i class="fa fa-fw fa-envelope"></i> fa-envelope</li>*@
+            <li class="span2"><i class="fa fa-fw fa-envelope-o"></i> fa-envelope-o</li>
+            @*<li class="span2"><i class="fa fa-fw fa-envelope-square"></i> fa-envelope-square</li>
+                <li class="span2"><i class="fa fa-fw fa-eraser"></i> fa-eraser</li>
+                <li class="span2"><i class="fa fa-fw fa-exchange"></i> fa-exchange</li>
+                <li class="span2"><i class="fa fa-fw fa-exclamation"></i> fa-exclamation</li>
+                <li class="span2"><i class="fa fa-fw fa-exclamation-circle"></i> fa-exclamation-circle</li>
+                <li class="span2"><i class="fa fa-fw fa-exclamation-triangle"></i> fa-exclamation-triangle</li>
+                <li class="span2"><i class="fa fa-fw fa-external-link"></i> fa-external-link</li>
+                <li class="span2"><i class="fa fa-fw fa-external-link-square"></i> fa-external-link-square</li>
+                <li class="span2"><i class="fa fa-fw fa-eye"></i> fa-eye</li>
+                <li class="span2"><i class="fa fa-fw fa-eye-slash"></i> fa-eye-slash</li>*@
+            <li class="span2"><i class="fa fa-fw fa-eyedropper"></i> fa-eyedropper</li>
+            <li class="span2"><i class="fa fa-fw fa-fax"></i> fa-fax</li>
+            <li class="span2"><i class="fa fa-fw fa-feed"></i> fa-feed <span class="text-muted">(alias)</span></li>
+            <li class="span2"><i class="fa fa-fw fa-female"></i> fa-female</li>
+            @*<li class="span2"><i class="fa fa-fw fa-fighter-jet"></i> fa-fighter-jet</li>
+                <li class="span2"><i class="fa fa-fw fa-file-archive-o"></i> fa-file-archive-o</li>
+                <li class="span2"><i class="fa fa-fw fa-file-audio-o"></i> fa-file-audio-o</li>
+                <li class="span2"><i class="fa fa-fw fa-file-code-o"></i> fa-file-code-o</li>
+                <li class="span2"><i class="fa fa-fw fa-file-excel-o"></i> fa-file-excel-o</li>*@
+            <li class="span2"><i class="fa fa-fw fa-file-image-o"></i> fa-file-image-o</li>
+            @*<li class="span2"><i class="fa fa-fw fa-file-movie-o"></i> fa-file-movie-o <span class="text-muted">(alias)</span></li>*@
+            <li class="span2"><i class="fa fa-fw fa-file-pdf-o"></i> fa-file-pdf-o</li>
+            @*<li class="span2"><i class="fa fa-fw fa-file-photo-o"></i> fa-file-photo-o <span class="text-muted">(alias)</span></li>
+                <li class="span2"><i class="fa fa-fw fa-file-picture-o"></i> fa-file-picture-o <span class="text-muted">(alias)</span></li>
+                <li class="span2"><i class="fa fa-fw fa-file-powerpoint-o"></i> fa-file-powerpoint-o</li>
+                <li class="span2"><i class="fa fa-fw fa-file-sound-o"></i> fa-file-sound-o <span class="text-muted">(alias)</span></li>
+                <li class="span2"><i class="fa fa-fw fa-file-video-o"></i> fa-file-video-o</li>
+                <li class="span2"><i class="fa fa-fw fa-file-word-o"></i> fa-file-word-o</li>
+                <li class="span2"><i class="fa fa-fw fa-file-zip-o"></i> fa-file-zip-o <span class="text-muted">(alias)</span></li>*@
+            <li class="span2"><i class="fa fa-fw fa-film"></i> fa-film</li>
+            @*<li class="span2"><i class="fa fa-fw fa-filter"></i> fa-filter</li>
+                <li class="span2"><i class="fa fa-fw fa-fire"></i> fa-fire</li>
+                <li class="span2"><i class="fa fa-fw fa-fire-extinguisher"></i> fa-fire-extinguisher</li>*@
+            <li class="span2"><i class="fa fa-fw fa-flag"></i> fa-flag</li>
+            @*<li class="span2"><i class="fa fa-fw fa-flag-checkered"></i> fa-flag-checkered</li>
+                <li class="span2"><i class="fa fa-fw fa-flag-o"></i> fa-flag-o</li>
+                <li class="span2"><i class="fa fa-fw fa-flash"></i> fa-flash <span class="text-muted">(alias)</span></li>*@
+            <li class="span2"><i class="fa fa-fw fa-flask"></i> fa-flask</li>
+            @*<li class="span2"><i class="fa fa-fw fa-folder"></i> fa-folder</li>
+                <li class="span2"><i class="fa fa-fw fa-folder-o"></i> fa-folder-o</li>*@
+            <li class="span2"><i class="fa fa-fw fa-folder-open"></i> fa-folder-open</li>
+            @*<li class="span2"><i class="fa fa-fw fa-folder-open-o"></i> fa-folder-open-o</li>
+                <li class="span2"><i class="fa fa-fw fa-frown-o"></i> fa-frown-o</li>
+                <li class="span2"><i class="fa fa-fw fa-futbol-o"></i> fa-futbol-o</li>*@
+            <li class="span2"><i class="fa fa-fw fa-gamepad"></i> fa-gamepad</li>
+            <li class="span2"><i class="fa fa-fw fa-gavel"></i> fa-gavel</li>
+            <li class="span2"><i class="fa fa-fw fa-gear"></i> fa-gear <span class="text-muted">(alias)</span></li>
+            <li class="span2"><i class="fa fa-fw fa-gears"></i> fa-gears <span class="text-muted">(alias)</span></li>
+            <li class="span2"><i class="fa fa-fw fa-gift"></i> fa-gift</li>
+            <li class="span2"><i class="fa fa-fw fa-glass"></i> fa-glass</li>
+            <li class="span2"><i class="fa fa-fw fa-globe"></i> fa-globe</li>
+            @*<li class="span2"><i class="fa fa-fw fa-graduation-cap"></i> fa-graduation-cap</li>
+                <li class="span2"><i class="fa fa-fw fa-group"></i> fa-group <span class="text-muted">(alias)</span></li>
+                <li class="span2"><i class="fa fa-fw fa-hand-grab-o"></i> fa-hand-grab-o <span class="text-muted">(alias)</span></li>
+                <li class="span2"><i class="fa fa-fw fa-hand-lizard-o"></i> fa-hand-lizard-o</li>
+                <li class="span2"><i class="fa fa-fw fa-hand-paper-o"></i> fa-hand-paper-o</li>
+                <li class="span2"><i class="fa fa-fw fa-hand-peace-o"></i> fa-hand-peace-o</li>
+                <li class="span2"><i class="fa fa-fw fa-hand-pointer-o"></i> fa-hand-pointer-o</li>
+                <li class="span2"><i class="fa fa-fw fa-hand-rock-o"></i> fa-hand-rock-o</li>
+                <li class="span2"><i class="fa fa-fw fa-hand-scissors-o"></i> fa-hand-scissors-o</li>
+                <li class="span2"><i class="fa fa-fw fa-hand-spock-o"></i> fa-hand-spock-o</li>
+                <li class="span2"><i class="fa fa-fw fa-hand-stop-o"></i> fa-hand-stop-o <span class="text-muted">(alias)</span></li>
+                <li class="span2"><i class="fa fa-fw fa-hdd-o"></i> fa-hdd-o</li>
+                <li class="span2"><i class="fa fa-fw fa-headphones"></i> fa-headphones</li>
+                <li class="span2"><i class="fa fa-fw fa-heart"></i> fa-heart</li>
+                <li class="span2"><i class="fa fa-fw fa-heart-o"></i> fa-heart-o</li>
+                <li class="span2"><i class="fa fa-fw fa-heartbeat"></i> fa-heartbeat</li>
+                <li class="span2"><i class="fa fa-fw fa-history"></i> fa-history</li>*@
+            <li class="span2"><i class="fa fa-fw fa-home"></i> fa-home</li>
+            @*<li class="span2"><i class="fa fa-fw fa-hotel"></i> fa-hotel <span class="text-muted">(alias)</span></li>
+                <li class="span2"><i class="fa fa-fw fa-hourglass"></i> fa-hourglass</li>
+                <li class="span2"><i class="fa fa-fw fa-hourglass-1"></i> fa-hourglass-1 <span class="text-muted">(alias)</span></li>
+                <li class="span2"><i class="fa fa-fw fa-hourglass-2"></i> fa-hourglass-2 <span class="text-muted">(alias)</span></li>
+                <li class="span2"><i class="fa fa-fw fa-hourglass-3"></i> fa-hourglass-3 <span class="text-muted">(alias)</span></li>
+                <li class="span2"><i class="fa fa-fw fa-hourglass-end"></i> fa-hourglass-end</li>
+                <li class="span2"><i class="fa fa-fw fa-hourglass-half"></i> fa-hourglass-half</li>
+                <li class="span2"><i class="fa fa-fw fa-hourglass-o"></i> fa-hourglass-o</li>
+                <li class="span2"><i class="fa fa-fw fa-hourglass-start"></i> fa-hourglass-start</li>
+                <li class="span2"><i class="fa fa-fw fa-i-cursor"></i> fa-i-cursor</li>
+                <li class="span2"><i class="fa fa-fw fa-image"></i> fa-image <span class="text-muted">(alias)</span></li>
+                <li class="span2"><i class="fa fa-fw fa-inbox"></i> fa-inbox</li>
+                <li class="span2"><i class="fa fa-fw fa-industry"></i> fa-industry</li>
+                <li class="span2"><i class="fa fa-fw fa-info"></i> fa-info</li>
+                <li class="span2"><i class="fa fa-fw fa-info-circle"></i> fa-info-circle</li>*@
+            <li class="span2"><i class="fa fa-fw fa-institution"></i> fa-institution <span class="text-muted">(alias)</span></li>
+            <li class="span2"><i class="fa fa-fw fa-key"></i> fa-key</li>
+            <li class="span2"><i class="fa fa-fw fa-keyboard-o"></i> fa-keyboard-o</li>
+            <li class="span2"><i class="fa fa-fw fa-language"></i> fa-language</li>
+            @*<li class="span2"><i class="fa fa-fw fa-laptop"></i> fa-laptop</li>
+                <li class="span2"><i class="fa fa-fw fa-leaf"></i> fa-leaf</li>
+                <li class="span2"><i class="fa fa-fw fa-legal"></i> fa-legal <span class="text-muted">(alias)</span></li>
+                <li class="span2"><i class="fa fa-fw fa-lemon-o"></i> fa-lemon-o</li>
+                <li class="span2"><i class="fa fa-fw fa-level-down"></i> fa-level-down</li>
+                <li class="span2"><i class="fa fa-fw fa-level-up"></i> fa-level-up</li>
+                <li class="span2"><i class="fa fa-fw fa-life-bouy"></i> fa-life-bouy <span class="text-muted">(alias)</span></li>
+                <li class="span2"><i class="fa fa-fw fa-life-buoy"></i> fa-life-buoy <span class="text-muted">(alias)</span></li>
+                <li class="span2"><i class="fa fa-fw fa-life-ring"></i> fa-life-ring</li>
+                <li class="span2"><i class="fa fa-fw fa-life-saver"></i> fa-life-saver <span class="text-muted">(alias)</span></li>
+                <li class="span2"><i class="fa fa-fw fa-lightbulb-o"></i> fa-lightbulb-o</li>*@
+            <li class="span2"><i class="fa fa-fw fa-line-chart"></i> fa-line-chart</li>
+            <li class="span2"><i class="fa fa-fw fa-location-arrow"></i> fa-location-arrow</li>
+            <li class="span2"><i class="fa fa-fw fa-lock"></i> fa-lock</li>
+            @*<li class="span2"><i class="fa fa-fw fa-magic"></i> fa-magic</li>
+                <li class="span2"><i class="fa fa-fw fa-magnet"></i> fa-magnet</li>
+                <li class="span2"><i class="fa fa-fw fa-mail-forward"></i> fa-mail-forward <span class="text-muted">(alias)</span></li>
+                <li class="span2"><i class="fa fa-fw fa-mail-reply"></i> fa-mail-reply <span class="text-muted">(alias)</span></li>
+                <li class="span2"><i class="fa fa-fw fa-mail-reply-all"></i> fa-mail-reply-all <span class="text-muted">(alias)</span></li>*@
+            <li class="span2"><i class="fa fa-fw fa-male"></i> fa-male</li>
+            <li class="span2"><i class="fa fa-fw fa-map"></i> fa-map</li>
+            @*<li class="span2"><i class="fa fa-fw fa-map-marker"></i> fa-map-marker</li>
+                <li class="span2"><i class="fa fa-fw fa-map-o"></i> fa-map-o</li>
+                <li class="span2"><i class="fa fa-fw fa-map-pin"></i> fa-map-pin</li>
+                <li class="span2"><i class="fa fa-fw fa-map-signs"></i> fa-map-signs</li>
+                <li class="span2"><i class="fa fa-fw fa-meh-o"></i> fa-meh-o</li>
+                <li class="span2"><i class="fa fa-fw fa-microphone"></i> fa-microphone</li>
+                <li class="span2"><i class="fa fa-fw fa-microphone-slash"></i> fa-microphone-slash</li>
+                <li class="span2"><i class="fa fa-fw fa-minus"></i> fa-minus</li>
+                <li class="span2"><i class="fa fa-fw fa-minus-circle"></i> fa-minus-circle</li>
+                <li class="span2"><i class="fa fa-fw fa-minus-square"></i> fa-minus-square</li>
+                <li class="span2"><i class="fa fa-fw fa-minus-square-o"></i> fa-minus-square-o</li>
+                <li class="span2"><i class="fa fa-fw fa-mobile"></i> fa-mobile</li>
+                <li class="span2"><i class="fa fa-fw fa-mobile-phone"></i> fa-mobile-phone <span class="text-muted">(alias)</span></li>
+                <li class="span2"><i class="fa fa-fw fa-money"></i> fa-money</li>
+                <li class="span2"><i class="fa fa-fw fa-moon-o"></i> fa-moon-o</li>*@
+            <li class="span2"><i class="fa fa-fw fa-mortar-board"></i> fa-mortar-board <span class="text-muted">(alias)</span></li>
+            <li class="span2"><i class="fa fa-fw fa-motorcycle"></i> fa-motorcycle</li>
+       
+            @*<li class="span2"><i class="fa fa-fw fa-navicon"></i> fa-navicon <span class="text-muted">(alias)</span></li>
+                <li class="span2"><i class="fa fa-fw fa-newspaper-o"></i> fa-newspaper-o</li>
+                <li class="span2"><i class="fa fa-fw fa-object-group"></i> fa-object-group</li>
+                <li class="span2"><i class="fa fa-fw fa-object-ungroup"></i> fa-object-ungroup</li>
+                <li class="span2"><i class="fa fa-fw fa-paint-brush"></i> fa-paint-brush</li>
+                <li class="span2"><i class="fa fa-fw fa-paper-plane"></i> fa-paper-plane</li>
+                <li class="span2"><i class="fa fa-fw fa-paper-plane-o"></i> fa-paper-plane-o</li>
+                <li class="span2"><i class="fa fa-fw fa-paw"></i> fa-paw</li>*@
+            <li class="span2"><i class="fa fa-fw fa-pencil"></i> fa-pencil</li>
+            @*<li class="span2"><i class="fa fa-fw fa-pencil-square"></i> fa-pencil-square</li>
+                <li class="span2"><i class="fa fa-fw fa-pencil-square-o"></i> fa-pencil-square-o</li>
+                <li class="span2"><i class="fa fa-fw fa-phone"></i> fa-phone</li>
+                <li class="span2"><i class="fa fa-fw fa-phone-square"></i> fa-phone-square</li>
+                <li class="span2"><i class="fa fa-fw fa-photo"></i> fa-photo <span class="text-muted">(alias)</span></li>
+                <li class="span2"><i class="fa fa-fw fa-picture-o"></i> fa-picture-o</li>
+                <li class="span2"><i class="fa fa-fw fa-pie-chart"></i> fa-pie-chart</li>
+                <li class="span2"><i class="fa fa-fw fa-plane"></i> fa-plane</li>*@
+            <li class="span2"><i class="fa fa-fw fa-plug"></i> fa-plug</li>
+            <li class="span2"><i class="fa fa-fw fa-plus"></i> fa-plus</li>
+            @*<li class="span2"><i class="fa fa-fw fa-plus-circle"></i> fa-plus-circle</li>
+                <li class="span2"><i class="fa fa-fw fa-plus-square"></i> fa-plus-square</li>
+                <li class="span2"><i class="fa fa-fw fa-plus-square-o"></i> fa-plus-square-o</li>
+                <li class="span2"><i class="fa fa-fw fa-power-off"></i> fa-power-off</li>
+                <li class="span2"><i class="fa fa-fw fa-print"></i> fa-print</li>
+                <li class="span2"><i class="fa fa-fw fa-puzzle-piece"></i> fa-puzzle-piece</li>
+                <li class="span2"><i class="fa fa-fw fa-qrcode"></i> fa-qrcode</li>
+                <li class="span2"><i class="fa fa-fw fa-question"></i> fa-question</li>
+                <li class="span2"><i class="fa fa-fw fa-question-circle"></i> fa-question-circle</li>
+                <li class="span2"><i class="fa fa-fw fa-quote-left"></i> fa-quote-left</li>
+                <li class="span2"><i class="fa fa-fw fa-quote-right"></i> fa-quote-right</li>
+                <li class="span2"><i class="fa fa-fw fa-random"></i> fa-random</li>
+                <li class="span2"><i class="fa fa-fw fa-recycle"></i> fa-recycle</li>
+                <li class="span2"><i class="fa fa-fw fa-refresh"></i> fa-refresh</li>
+                <li class="span2"><i class="fa fa-fw fa-registered"></i> fa-registered</li>
+                <li class="span2"><i class="fa fa-fw fa-remove"></i> fa-remove <span class="text-muted">(alias)</span></li>
+                <li class="span2"><i class="fa fa-fw fa-reorder"></i> fa-reorder <span class="text-muted">(alias)</span></li>
+                <li class="span2"><i class="fa fa-fw fa-reply"></i> fa-reply</li>
+                <li class="span2"><i class="fa fa-fw fa-reply-all"></i> fa-reply-all</li>*@
+            <li class="span2"><i class="fa fa-fw fa-retweet"></i> fa-retweet</li>
+            <li class="span2"><i class="fa fa-fw fa-road"></i> fa-road</li>
+            <li class="span2"><i class="fa fa-fw fa-rocket"></i> fa-rocket</li>
+            <li class="span2"><i class="fa fa-fw fa-rss"></i> fa-rss</li>
+            @*<li class="span2"><i class="fa fa-fw fa-rss-square"></i> fa-rss-square</li>*@
+            @*<li class="span2"><i class="fa fa-fw fa-search"></i> fa-search</li>
+                <li class="span2"><i class="fa fa-fw fa-search-minus"></i> fa-search-minus</li>
+                <li class="span2"><i class="fa fa-fw fa-search-plus"></i> fa-search-plus</li>
+                <li class="span2"><i class="fa fa-fw fa-send"></i> fa-send <span class="text-muted">(alias)</span></li>*@
+            <li class="span2"><i class="fa fa-fw fa-send-o"></i> fa-send-o <span class="text-muted">(alias)</span></li>
+            @*<li class="span2"><i class="fa fa-fw fa-server"></i> fa-server</li>
+                <li class="span2"><i class="fa fa-fw fa-share"></i> fa-share</li>*@
+            <li class="span2"><i class="fa fa-fw fa-share-alt"></i> fa-share-alt</li>
+            @*<li class="span2"><i class="fa fa-fw fa-share-alt-square"></i> fa-share-alt-square</li>
+                <li class="span2"><i class="fa fa-fw fa-share-square"></i> fa-share-square</li>
+                <li class="span2"><i class="fa fa-fw fa-share-square-o"></i> fa-share-square-o</li>
+                <li class="span2"><i class="fa fa-fw fa-shield"></i> fa-shield</li>*@
+            <li class="span2"><i class="fa fa-fw fa-ship"></i> fa-ship</li>
+            <li class="span2"><i class="fa fa-fw fa-shopping-cart"></i> fa-shopping-cart</li>
+            @*<li class="span2"><i class="fa fa-fw fa-sign-in"></i> fa-sign-in</li>
+                <li class="span2"><i class="fa fa-fw fa-sign-out"></i> fa-sign-out</li>*@
+            <li class="span2"><i class="fa fa-fw fa-signal"></i> fa-signal</li>
+            <li class="span2"><i class="fa fa-fw fa-sitemap"></i> fa-sitemap</li>
+            <li class="span2"><i class="fa fa-fw fa-sliders"></i> fa-sliders</li>
+            @*<li class="span2"><i class="fa fa-fw fa-smile-o"></i> fa-smile-o</li>
+                <li class="span2"><i class="fa fa-fw fa-soccer-ball-o"></i> fa-soccer-ball-o <span class="text-muted">(alias)</span></li>
+                <li class="span2"><i class="fa fa-fw fa-sort"></i> fa-sort</li>
+                <li class="span2"><i class="fa fa-fw fa-sort-alpha-asc"></i> fa-sort-alpha-asc</li>
+                <li class="span2"><i class="fa fa-fw fa-sort-alpha-desc"></i> fa-sort-alpha-desc</li>
+                <li class="span2"><i class="fa fa-fw fa-sort-amount-asc"></i> fa-sort-amount-asc</li>
+                <li class="span2"><i class="fa fa-fw fa-sort-amount-desc"></i> fa-sort-amount-desc</li>
+                <li class="span2"><i class="fa fa-fw fa-sort-asc"></i> fa-sort-asc</li>
+                <li class="span2"><i class="fa fa-fw fa-sort-desc"></i> fa-sort-desc</li>
+                <li class="span2"><i class="fa fa-fw fa-sort-down"></i> fa-sort-down <span class="text-muted">(alias)</span></li>
+                <li class="span2"><i class="fa fa-fw fa-sort-numeric-asc"></i> fa-sort-numeric-asc</li>
+                <li class="span2"><i class="fa fa-fw fa-sort-numeric-desc"></i> fa-sort-numeric-desc</li>
+                <li class="span2"><i class="fa fa-fw fa-sort-up"></i> fa-sort-up <span class="text-muted">(alias)</span></li>
+                <li class="span2"><i class="fa fa-fw fa-space-shuttle"></i> fa-space-shuttle</li>*@
+            <li class="span2"><i class="fa fa-fw fa-spinner"></i> fa-spinner</li>
+            <li class="span2"><i class="fa fa-fw fa-spoon"></i> fa-spoon</li>
+            @*<li class="span2"><i class="fa fa-fw fa-square"></i> fa-square</li>
+                <li class="span2"><i class="fa fa-fw fa-square-o"></i> fa-square-o</li>
+                <li class="span2"><i class="fa fa-fw fa-star"></i> fa-star</li>
+                <li class="span2"><i class="fa fa-fw fa-star-half"></i> fa-star-half</li>
+                <li class="span2"><i class="fa fa-fw fa-star-half-empty"></i> fa-star-half-empty <span class="text-muted">(alias)</span></li>
+                <li class="span2"><i class="fa fa-fw fa-star-half-full"></i> fa-star-half-full <span class="text-muted">(alias)</span></li>
+                <li class="span2"><i class="fa fa-fw fa-star-half-o"></i> fa-star-half-o</li>*@
+            <li class="span2"><i class="fa fa-fw fa-star-o"></i> fa-star-o</li>
+            @*<li class="span2"><i class="fa fa-fw fa-sticky-note"></i> fa-sticky-note</li>
+                <li class="span2"><i class="fa fa-fw fa-sticky-note-o"></i> fa-sticky-note-o</li>*@
+            <li class="span2"><i class="fa fa-fw fa-street-view"></i> fa-street-view</li>
+            <li class="span2"><i class="fa fa-fw fa-suitcase"></i> fa-suitcase</li>
+            <li class="span2"><i class="fa fa-fw fa-sun-o"></i> fa-sun-o</li>
+            @*<li class="span2"><i class="fa fa-fw fa-support"></i> fa-support <span class="text-muted">(alias)</span></li>
+                <li class="span2"><i class="fa fa-fw fa-tablet"></i> fa-tablet</li>*@
+            <li class="span2"><i class="fa fa-fw fa-tachometer"></i> fa-tachometer</li>
+            @*<li class="span2"><i class="fa fa-fw fa-tag"></i> fa-tag</li>*@
+            <li class="span2"><i class="fa fa-fw fa-tags"></i> fa-tags</li>
+            <li class="span2"><i class="fa fa-fw fa-tasks"></i> fa-tasks</li>
+            <li class="span2"><i class="fa fa-fw fa-taxi"></i> fa-taxi</li>
+            <li class="span2"><i class="fa fa-fw fa-television"></i> fa-television</li>
+            @*<li class="span2"><i class="fa fa-fw fa-terminal"></i> fa-terminal</li>
+                <li class="span2"><i class="fa fa-fw fa-thumb-tack"></i> fa-thumb-tack</li>
+                <li class="span2"><i class="fa fa-fw fa-thumbs-down"></i> fa-thumbs-down</li>
+                <li class="span2"><i class="fa fa-fw fa-thumbs-o-down"></i> fa-thumbs-o-down</li>
+                <li class="span2"><i class="fa fa-fw fa-thumbs-o-up"></i> fa-thumbs-o-up</li>
+                <li class="span2"><i class="fa fa-fw fa-thumbs-up"></i> fa-thumbs-up</li>
+                <li class="span2"><i class="fa fa-fw fa-ticket"></i> fa-ticket</li>
+                <li class="span2"><i class="fa fa-fw fa-times"></i> fa-times</li>
+                <li class="span2"><i class="fa fa-fw fa-times-circle"></i> fa-times-circle</li>
+                <li class="span2"><i class="fa fa-fw fa-times-circle-o"></i> fa-times-circle-o</li>
+                <li class="span2"><i class="fa fa-fw fa-tint"></i> fa-tint</li>
+                <li class="span2"><i class="fa fa-fw fa-toggle-down"></i> fa-toggle-down <span class="text-muted">(alias)</span></li>
+                <li class="span2"><i class="fa fa-fw fa-toggle-left"></i> fa-toggle-left <span class="text-muted">(alias)</span></li>
+                <li class="span2"><i class="fa fa-fw fa-toggle-off"></i> fa-toggle-off</li>
+                <li class="span2"><i class="fa fa-fw fa-toggle-on"></i> fa-toggle-on</li>
+                <li class="span2"><i class="fa fa-fw fa-toggle-right"></i> fa-toggle-right <span class="text-muted">(alias)</span></li>
+                <li class="span2"><i class="fa fa-fw fa-toggle-up"></i> fa-toggle-up <span class="text-muted">(alias)</span></li>*@
+            <li class="span2"><i class="fa fa-fw fa-trademark"></i> fa-trademark</li>
+            <li class="span2"><i class="fa fa-fw fa-trash"></i> fa-trash</li>
+            @*<li class="span2"><i class="fa fa-fw fa-trash-o"></i> fa-trash-o</li>*@
+            <li class="span2"><i class="fa fa-fw fa-tree"></i> fa-tree</li>
+            <li class="span2"><i class="fa fa-fw fa-trophy"></i> fa-trophy</li>
+            <li class="span2"><i class="fa fa-fw fa-truck"></i> fa-truck</li>
+
+
+
+    </ul>
+</div>
+
+<script src="~/Scripts/inc/jquery-1.10.2.js"></script>
+<script src="~/Scripts/core/Module.js"></script>
+<script src="~/Scripts/inc/ajaxfileupload.js"></script>
+<script type="text/javascript">
+    var authCookie = "@(Request.Cookies[Huber.Framework.Bll.UserBll.CoSignKey] == null ? string.Empty : Request.Cookies[Huber.Framework.Bll.UserBll.CoSignKey].Value)";
+    var sessionCookie = "@(Session.SessionID)";
+    // debugger;
+
+
+
+</script>

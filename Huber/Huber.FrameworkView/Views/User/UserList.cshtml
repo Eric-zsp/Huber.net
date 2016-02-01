@@ -1,0 +1,80 @@
+﻿@{
+    //分页函数
+    var data = new ViewDataDictionary();
+    data.Add("PageIndex", @ViewBag.PageIndex); //当前页号
+    data.Add("PageCount", @ViewBag.PageCount); //总页数
+    //data.Add("CallBack","func"); //func是用户翻页时回调你的函数名（参数为用户点击的页号码）
+    data.Add("CallBack", @ViewBag.callback); //func是用户翻页时回调你的函数名（参数为用户点击的页号码）
+}
+@using Huber.Framework.Entity;
+@model List<UserEntity>
+
+
+
+
+
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th class="span3">
+                登录名
+            </th>
+            <th class="span3">
+                <span class="line"></span>头像
+            </th>
+            <th class="span3">
+                <span class="line"></span>昵称
+            </th>
+            <th class="span3">
+                <span class="line"></span>状态
+            </th>
+            <th class="span3">
+                <span class="line"></span>删除
+            </th>
+            <th class="span3">
+                <span class="line"></span>密码
+            </th>
+            <th class="span3">
+                <span class="line"></span>角色
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            UserEntity userEntity = Model[i];
+
+            <tr class="@(i % 2 == 0 ? "odd" : "even") gradex">
+                <td>@userEntity.Uid</td>
+                <td > 
+                    <div class="pull-left image">
+                        <img src="@userEntity.Photo" class="img-circle" alt="User Image" style="height:45px;" >
+                    </div>
+                
+                </td>
+                <td onclick="User_operat.modifyUserName(this,'@userEntity.Uid') ">@userEntity.Name</td>
+                @if (userEntity.Status == 1)
+                {
+                    <td> <span onclick="User_operat.disableUser(this, '@userEntity.Uid' ) " class="tdl hand">禁用</span></td>
+                }
+                else
+                {
+
+                    <td><span onclick="User_operat.enableUser(this, '@userEntity.Uid' ) " class="tdl hand">启用</span></td>
+
+                }
+                <td>
+                    <span data-uid="@userEntity.Uid" onclick="User_operat.deleteUser(this)" class="tdl hand">删除</span>
+                </td>
+                <td>
+                    <span onclick="User_operat.resetUserPwd('@userEntity.Uid') " class="tdl hand">重置密码</span>
+                </td>
+                <td> <span data-roles="@userEntity.RolesIds" data-userid="@userEntity.Uid" onclick=" User_operat.roleManage2(this) " class="tdl hand">角色管理</span></td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div id="bill_pagelist">
+    <div id="mywork_myPage" class="pagination pull-right">@Html.Partial("page", data)</div>
+</div>

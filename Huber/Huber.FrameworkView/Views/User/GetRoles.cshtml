@@ -1,0 +1,6 @@
+﻿@using Huber.Framework.Entity;
+@model List<Huber.Framework.Entity.RoleEntity>
+@foreach (RoleEntity roleEntity in Model)
+{
+    <li><input type="checkbox" value="@roleEntity.Id" id="role_'@roleEntity.Id'" /><label for="role_'@roleEntity.Id'" style="cursor: pointer">@roleEntity.Name</label></li>
+}

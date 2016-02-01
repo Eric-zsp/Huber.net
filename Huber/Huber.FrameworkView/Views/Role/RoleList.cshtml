@@ -1,0 +1,43 @@
+﻿@using Huber.Framework
+@{
+    //分页函数
+    var data = new ViewDataDictionary();
+    data.Add("PageIndex", @ViewBag.PageIndex); //当前页号
+    data.Add("PageCount", @ViewBag.PageCount); //总页数
+    //data.Add("CallBack","func"); //func是用户翻页时回调你的函数名（参数为用户点击的页号码）
+    data.Add("CallBack", @ViewBag.callback); //func是用户翻页时回调你的函数名（参数为用户点击的页号码）
+}
+@model List<RoleEntity>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <td>角色名称</td>
+            <td>管理员</td>
+            <td>操作</td>
+            <td>删除</td>
+            <td>权限管理</td>
+        </tr>
+    </thead>
+    @foreach (RoleEntity roleEntity in Model)
+    {
+        <tr>
+            <td id="role_@(roleEntity.Id)_roleName">@roleEntity.Name</td>
+            <td id="role_@(roleEntity.Id)_roleSuper">@Html.Raw(roleEntity.IsSuper == 1 ? "是" : "否")</td>
+            <td class="tdl hand">
+                <span data-rolename="@roleEntity.Name" data-rolesuper="@roleEntity.IsSuper" onclick="Role_operat.updateRole(this,@roleEntity.Id)">修改</span>
+            </td>
+            <td class="tdl hand">
+                <span onclick="Role_operat.deleteRole(this,@roleEntity.Id)">删除</span>
+            </td>
+            <td class="tdl hand">
+                <span onclick="Role_operat.rightManage(this,@roleEntity.Id)" data-rights='@roleEntity.RightIds'>权限管理</span>
+            </td>
+        </tr>
+    }
+</table>
+
+
+<div id="role_pagelist">
+    <div id="role_myPage" class="pagination pull-right">@Html.Partial("page", data)</div>
+</div>
+

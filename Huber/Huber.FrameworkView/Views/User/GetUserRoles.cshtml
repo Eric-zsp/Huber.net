@@ -1,0 +1,15 @@
+﻿@using Huber.Framework.Entity;
+@{
+    string userId = ViewData["uId"] as string;
+}
+@model List<RoleEntity>
+<ul>
+    @foreach (RoleEntity roleEntity in Model)
+    {
+        <li>
+            <span>@roleEntity.Name</span>
+            <span onclick="User_operat.RemoveUserRole('@userId',@roleEntity.Id)">移除角色</span>
+        </li>
+    }
+    <li><span onclick="User_operat.addUserRole('@userId')">添加角色</span></li>
+</ul>

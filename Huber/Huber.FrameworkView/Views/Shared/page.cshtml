@@ -1,0 +1,83 @@
+﻿@if (ViewBag.PageCount > 1)
+{
+    <ul>
+        @if (ViewBag.PageCount < 11)
+        {
+
+            if (ViewBag.PageIndex != 1)
+            {
+                <li><a href="javascript:@(ViewBag.CallBack)(1)">首页</a></li>
+                <li><a href="javascript:@(ViewBag.CallBack)(@(ViewBag.PageIndex - 1))">上一页</a></li>
+            }
+            for (var i = 1; i <= ViewBag.PageCount; i++)
+            {
+                string className = string.Empty;
+                className = (i == ViewBag.PageIndex ? "active" : "");
+                string vie_clik = (i == ViewBag.PageIndex ? "" : ViewBag.CallBack + "(" + i + ")");
+                <li name="pagenum"><a href="javascript:@(vie_clik);" name="aNum" class="@className">@i</a></li>
+            }
+            if (ViewBag.PageIndex != ViewBag.PageCount)
+            {
+                <li><a href="javascript:@(ViewBag.CallBack)(@(ViewBag.PageIndex + 1))">下一页</a></li>
+                <li><a href="javascript:@(ViewBag.CallBack)(@ViewBag.PageCount)">尾页</a></li>
+            }
+
+        }
+        else
+        {
+            if (ViewBag.PageIndex - 4 >= 1 && ViewBag.PageIndex + 5 <= ViewBag.PageCount)
+            {
+                <li><a href="javascript:@(ViewBag.CallBack)(1)">首页</a></li>
+                <li><a href="javascript:@(ViewBag.CallBack)(@(ViewBag.PageIndex - 1))">上一页</a></li>
+                for (var i = ViewBag.PageIndex - 4; i <= ViewBag.PageIndex + 5; i++)
+                {
+                    string className = string.Empty;
+                    className = (i == ViewBag.PageIndex ? "active" : "");
+                    string vie_clik = (i == ViewBag.PageIndex ? "" : ViewBag.CallBack + "(" + i + ")");
+                    <li name="pagenum"><a href="javascript:@(vie_clik);" name="aNum" class="@className">@i</a></li>
+                }
+                if (ViewBag.PageIndex + 5 != ViewBag.PageCount)
+                {
+                    <li><a href="javascript:@(ViewBag.CallBack)(@(ViewBag.PageIndex + 1))">下一页</a></li>
+                    <li><a href="javascript:@(ViewBag.CallBack)(@ViewBag.PageCount)">尾页</a></li>
+                }
+            }
+            else if (ViewBag.PageIndex - 4 < 1)
+            {
+                if (ViewBag.PageIndex != 1)
+                {
+                    <li><a href="javascript:@(ViewBag.CallBack)(1)">首页</a></li>
+                    <li><a href="javascript:@(ViewBag.CallBack)(@(ViewBag.PageIndex - 1))">上一页</a></li>
+                }
+                for (var i = 1; i <= 10; i++)
+                {
+                    string className = string.Empty;
+                    className = (i == ViewBag.PageIndex ? "active" : "");
+                    string vie_clik = (i == ViewBag.PageIndex ? "" : ViewBag.CallBack + "(" + i + ")");
+                    <li name="pagenum"><a href="javascript:@(vie_clik);" name="aNum" class="@className">@i</a></li>
+                }
+                if (ViewBag.PageIndex != ViewBag.PageCount)
+                {
+                    <li><a href="javascript:@(ViewBag.CallBack)(@(ViewBag.PageIndex + 1))">下一页</a></li>
+                    <li><a href="javascript:@(ViewBag.CallBack)(@ViewBag.PageCount)">尾页</a></li>
+                }
+            }
+            else if (ViewBag.PageIndex + 5 > ViewBag.PageCount)
+            {
+                if (ViewBag.PageIndex != 1)
+                {
+                    <li><a href="javascript:@(ViewBag.CallBack)(1)">首页</a></li>
+                    <li><a href="javascript:@(ViewBag.CallBack)(@(ViewBag.PageIndex - 1))">上一页</a></li>
+                }
+                for (var i = ViewBag.PageCount - 9; i <= ViewBag.PageCount; i++)
+                {
+                    string className = string.Empty;
+                    className = (i == ViewBag.PageIndex ? "active" : "");
+                    string vie_clik = (i == ViewBag.PageIndex ? "" : ViewBag.CallBack + "(" + i + ")");
+                    <li name="pagenum"><a href="javascript:@(vie_clik);" name="aNum" class="@className">@i</a></li>
+                }
+            }
+        }
+    </ul>
+}
+

@@ -1,0 +1,67 @@
+﻿@using Huber.Framework.Entity;
+@model List<PluginEntity>
+@{
+    //分页函数
+    var data = new ViewDataDictionary();
+    data.Add("PageIndex", ViewBag.pageindex); //当前页号
+    data.Add("PageCount", ViewBag.count); //总页数
+    data.Add("CallBack", "Module_operat.showList"); //func是用户翻页时回调你的函数名（参数为用户点击的页号码）
+}
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th class="span3">
+                模块图标
+            </th>
+            <th class="span3">
+                模块名称
+            </th>
+            <th class="span3">
+                <span class="line"></span>版本
+            </th>
+            <th class="span3">
+                <span class="line"></span>描述
+            </th>
+            <th class="span3">
+                <span class="line"></span>操作
+            </th>
+            <th class="span3">
+                <span class="line"></span>删除
+            </th>
+            <th class="span3">
+                <span class="line"></span>升级
+            </th>
+        </tr>
+    </thead>
+    <tbody >
+        @if (Model == null || Model.Count == 0)
+        {
+            <tr><td colspan="8"><div class="alert alert-info"><i class="icon-exclamation-sign"></i>未查询到任何数据！</div></td></tr>
+        }
+        else
+        {
+            for (int i = 0; i < Model.Count; i++)
+            {
+                PluginEntity item = Model[i];
+                <tr class="@(i % 2 == 0 ? "odd" : "even") gradex">
+                    <td onclick="Module_operat.changeIconShow(@item.Id)" style="cursor:pointer"><a class="table-icon span12"><i id="mList_icon_i_@item.Id" class="@item.Icon"></i></a> </td>
+                    <td>@item.Name</td>
+                    <td>@item.PVersion</td>
+                    <td>@item.Describe</td>
+                    <td>
+                        <span style="cursor:pointer" id="module_@(item.Id)_status" onclick="Module_operat.changeStatus(this,@item.Id)" status="@item.Status">@Html.Raw(item.Status == 1 ? "停用":"启用" )</span>
+                        <span style="cursor:pointer" onclick="Module_operat.showMenu(this,@item.Id)" show="@item.MenuShow">@Html.Raw(item.MenuShow == 0 ? "显示" : "隐藏")</span>
+                    </td>
+                    <td onclick="Module_operat.delModule(this,@item.Id); " style=" cursor: pointer">删除</td>
+                    <td onclick="Module_operat.uploadModule(@item.Id,'@item.Name');" style="cursor: pointer">升级</td>
+                    <td style="display:none" id="module_@(item.Id)_status">@item.Status</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+<div id="bill_pagelist">
+    <div id="mywork_myPage" class="pagination pull-right">@Html.Partial("page", data)</div>
+</div>
+
+

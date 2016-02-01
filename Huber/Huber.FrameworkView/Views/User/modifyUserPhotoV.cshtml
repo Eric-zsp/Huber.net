@@ -1,0 +1,109 @@
+﻿@{
+    ViewBag.Title = "modifyUserPhotoV";
+    Layout = "/Views/Shared/_LayoutPage1.cshtml";
+}
+<link href="/Content/css/MdPhoto.css?v=9" rel="stylesheet" />
+<script src="/Scripts/inc/jquery.Jcrop.min.js"></script>
+<link href="/Content/css/jquery.Jcrop.css" rel="stylesheet" />
+<link href="/AdminLTE-2.3.0/font-awesome-4.4.0/css/font-awesome.css" rel="stylesheet" />
+<div class="table-wrapper products-table section">
+    <div class="row-fluid head">
+        <div class="span12">
+            <h4>修改头像</h4>
+        </div>
+        <!-- begin modifyUserPhotoDiv -->
+        <div id="modifyUserPhotoDiv">
+          
+                <div class="avatar-body">
+
+                    <!-- Upload image and data -->
+                    <div class="avatar-upload">
+                        <input class="avatar-src" name="avatar_src" type="hidden">
+                        <input class="avatar-data" name="avatar_data" type="hidden">
+                        <label for="avatarInput">头像上传</label>
+                        <input class="avatar-input" id="avatarInput" name="avatar_file" type="file">
+                    </div>
+
+                    <!-- Crop and preview -->
+                    <div class="row">
+                        <div class="span9" id="photoDiv">
+                            <div class="avatar-wrapper" id="photoJcropDiv">
+                                <div class="photoCenter" id="photoCenter"><img src="@ViewBag.User.Photo" id="photoJcrop" /></div>
+                                
+                            </div>
+                        </div>
+                        <div class="span3">
+                            <div class="avatar-preview preview-lg"><img src="@ViewBag.User.Photo"></div>
+                            <div class="avatar-preview preview-md"><img src="@ViewBag.User.Photo"></div>
+                            <div class="avatar-preview preview-sm"><img src="@ViewBag.User.Photo"></div>
+                        </div>
+                    </div>
+
+                    <div class="row avatar-btns">
+                        <div class="span9">
+                            <div class="pull-right">
+                                <i class="icon-zoom-in"></i>
+                                <i class="icon-zoom-out"></i>
+                            </div>
+
+                        </div>
+                        <div class="span3">
+                            <button class="btn btn-primary btn-block avatar-save" type="submit">Done</button>
+                        </div>
+                    </div>
+                </div>
+            aaaaaa
+            <img src="file:///E:/迅雷下载/201504212053/201504212053/assets/img/picture.jpg" />
+        </div>
+        <!-- end modifyUserPhotoDiv -->
+        <div>
+    </div>
+</div>
+</div>
+ 
+<script type="text/javascript">
+    (function () {
+
+
+        var jcrop_api;
+        initJcrop();
+
+        // The function is pretty simple
+        function initJcrop()//{{{
+        {
+            $('#photoJcrop').Jcrop({}, function () {
+                jcrop_api = this;
+                //jcrop_api.animateTo([10, 10, 400, 300]);
+                jcrop_api.setOptions({
+                    allowResize: true,
+                    handleOpacity: .6,
+                    handleSize:9
+                });
+            });
+        };
+
+        $("#avatarInput").change(function () {
+            var url = getFileUrl("avatarInput");
+            $("#photoJcrop").attr("src", url);
+            jcrop_api.setImage($("#photoJcrop").attr("src"));
+        });
+
+    }());
+   
+
+        /** 
+        * 从 file 域获取 本地图片 url 
+        */
+        function getFileUrl(sourceId) {
+            var url;
+            if (navigator.userAgent.indexOf("MSIE") >= 1) { // IE 
+                url = document.getElementById(sourceId).value;
+            } else if (navigator.userAgent.indexOf("Firefox") > 0) { // Firefox 
+                url = window.URL.createObjectURL(document.getElementById(sourceId).files.item(0));
+            } else if (navigator.userAgent.indexOf("Chrome") > 0) { // Chrome 
+                url = window.URL.createObjectURL(document.getElementById(sourceId).files.item(0));
+            }
+            return url;
+        }
+  
+</script>

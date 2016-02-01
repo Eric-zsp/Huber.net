@@ -1,0 +1,23 @@
+﻿@model MVCDemo.Models.TestM
+@using MVCDemo
+@{
+   
+    ViewBag.Title = "Index2";
+    Layout = "Views/Shared/_Layout.cshtml";
+   
+}
+<script src="@BaseModulePath.getViewDirPath/Scripts/Demo.js"></script>
+    @foreach (var i in System.Linq.Enumerable.Range(1, 10))
+    {
+        <div>@i </div>
+    }
+ @Model.A <br/>
+ @ViewBag.abc <br />
+@*@Mfg.Comm.Log.LogHelper.LogHelper.Log.Debug("1234")*@
+<br/>------------------------------------
+@Html.Action("Index4", "Demo", @Model)
+<br/>------------------------------------
+ 绕树三 
+  
+  @Html.RenderPartial("Index4", "Demo", @Model, @ViewBag)  
+<h2>Index2</h2>

@@ -1,0 +1,58 @@
+﻿@{
+     Layout = "/views/Shared/_LayoutPage1.cshtml";
+    ViewBag.Title = "角色管理";
+}
+<link href="~/Content/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" />
+<div class="table-wrapper products-table section" >
+    <div class="row-fluid head">
+        <div class="span12">
+            <h4>角色管理</h4>
+        </div>
+        <div class="row-fluid filter-block">
+            <div class="pull-right">
+
+                <a class="btn-flat success new-product" href="javascript:Role_operat.addRole()">+ 添加角色</a>
+            </div>
+            <div class="pull-left">
+                <input type="text" class="search user-search" placeholder="查找角色名称" id="RoleSearch" />
+            </div>
+        </div>
+    </div>
+
+
+
+    <div id="roleList"></div>
+    <div id="addRoleDiv" style="display: none">
+        <table>
+            <tr>
+                <td class="tr">角色名称：</td>
+                <td><input type="text" id="add_roleName" /></td>
+            </tr>
+            <tr>
+                <td class="tr">是否是管理员：</td>
+                <td><input type="checkbox" id="add_isSuper" /></td>
+            </tr>
+        </table>
+    </div>
+    <div id="updateRoleDiv" style="display: none">
+        <table>
+            <tr>
+                <td class="tr">角色名称：</td>
+                <td><input type="text" id="update_roleName" /></td>
+            </tr>
+            <tr>
+                <td class="tr">是否是管理员：</td>
+                <td><input type="checkbox" id="update_isSuper" /></td>
+            </tr>
+        </table>
+    </div>
+    <div>
+        <div id="RoleRightPannel" style="width: 630px; overflow: auto; border: 1px solid red; display: inline; float: left; display: none" class="ztree">
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/inc/jquery.ztree.all-3.5.min.js"></script>
+<script src="~/Scripts/core/Role.js"></script>
+<script type="text/javascript">
+  
+</script>
